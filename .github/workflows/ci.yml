@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-test:
+  php-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,8 +18,11 @@ jobs:
           php-version: '8.2'
           extensions: sockets, json
 
-      - name: "Validate composer.json and composer.lock"
+      - name: "Validate composer.json"
         run: "composer validate --strict"
+
+      - name: "Installing dependencies"
+        run: "composer install"
 
       - name: "Check code standard"
         run: "vendor/bin/phpcs"
