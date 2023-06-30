@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Composer install
+        uses: php-actions/composer@v6
+
+      - name: PHPStan
+        uses: php-actions/phpstan@v3
+        with:
+          php_version: 8.2
+
+      - name: PHP Code Sniffer
+        uses: php-actions/phpcs@v1
+        with:
+          php_version: 8.2
+          standard: phpcs.xml
