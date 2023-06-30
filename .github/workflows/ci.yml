@@ -12,19 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Composer install
-        uses: php-actions/composer@v6
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
         with:
-          args: --ignore-platform-reqs
+          php-version: '8.2'
+          extensions: sockets, json
 
-      - name: PHPStan
-        uses: php-actions/phpstan@v3
-        with:
-          php_version: 8.2
+      - name: "Validate composer.json and composer.lock"
+        run: "composer validate --strict"
 
-      - name: PHP Code Sniffer
-        uses: php-actions/phpcs@v1
-        with:
-          php_version: 8.2
-          vendored_phpcs_path: vendor/bin/phpcs
-          standard: phpcs.xml
+      - name: "Run PHPCS"
+        run: "./vendor/bin/phpcs"
+
+      - name: "Run PHPStan"
+        run: "./vendor/bin/phpstan analyse"
