@@ -14,6 +14,8 @@ jobs:
 
       - name: Composer install
         uses: php-actions/composer@v6
+        with:
+          args: --ignore-platform-reqs
 
       - name: PHPStan
         uses: php-actions/phpstan@v3
