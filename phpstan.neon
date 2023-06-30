@@ -1,0 +1,8 @@
+parameters:
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+
+    level: max
+    paths:
+        - src
+
