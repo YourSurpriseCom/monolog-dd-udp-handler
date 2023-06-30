@@ -26,4 +26,5 @@ jobs:
         uses: php-actions/phpcs@v1
         with:
           php_version: 8.2
+          vendored_phpcs_path: ./vendor/bin/phpcs
           standard: phpcs.xml
