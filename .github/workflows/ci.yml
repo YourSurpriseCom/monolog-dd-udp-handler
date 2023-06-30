@@ -21,8 +21,8 @@ jobs:
       - name: "Validate composer.json and composer.lock"
         run: "composer validate --strict"
 
-      - name: "Run PHPCS"
-        run: "./vendor/bin/phpcs"
+      - name: "Check code standard"
+        run: "vendor/bin/phpcs"
 
       - name: "Run PHPStan"
-        run: "./vendor/bin/phpstan analyse"
+        run: "vendor/bin/phpstan analyse"
