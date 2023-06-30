@@ -14,7 +14,7 @@
     "php": "^8.2",
     "ext-json": "*",
     "ext-sockets": "*",
-    "datadog/dd-trace": "^0.87.2 || ^0.88.0",
+    "datadog/dd-trace": "^0.87",
     "monolog/monolog": "^3.4"
   },
   "require-dev": {
@@ -25,11 +25,6 @@
   "autoload": {
     "psr-4": {
       "YourSurpriseCom\\Monolog\\DatadogUdp\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "YourSurpriseCom\\Monolog\\DatadogUdp\\Test\\": "test/"
     }
   },
   "config": {
