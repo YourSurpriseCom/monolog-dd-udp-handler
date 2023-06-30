@@ -10,6 +10,8 @@ As this handler gather the information from the current trace, only one proxy is
 The logs will be connected to the correct trace and service.
 
 ## Usage
+Install the package using composer: `composer require yoursurprisecom/monolog-dd-udp-handler`
+
 Simply create the handler with the proxy hostname and port, and push the handler into monolog:
 
 ```PHP
