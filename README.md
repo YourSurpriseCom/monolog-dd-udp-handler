@@ -1,4 +1,10 @@
 # Monolog Datadog UDP Handler
+![workflow](https://github.com/YourSurpriseCom/monolog-dd-udp-handler/actions/workflows/ci.yml/badge.svg)
+[![Minimum PHP Version](https://img.shields.io/packagist/php-v/yoursurprisecom/monolog-dd-udp-handler.svg?maxAge=3600)](https://packagist.org/packages/yoursurprisecom/monolog-dd-udp-handler)
+![phpstan](https://img.shields.io/badge/PHPStan-level%20Max-brightgreen.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Overview
 This [Monolog](https://github.com/Seldaek/monolog) handler will send the messages to the [dd-log-proxy](https://github.com/YourSurpriseCom/dd-log-proxy) over UDP and the `dd-log-proxy` will send the messages over TCP to the Datadog API.
 
 ## Datadog Log Proxy
