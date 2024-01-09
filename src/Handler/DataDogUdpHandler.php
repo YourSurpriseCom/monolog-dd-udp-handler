@@ -17,7 +17,8 @@ use Socket;
 
 use function array_keys;
 use function array_map;
-use function DDTrace\current_context;
+use function dd_trace_peek_span_id;
+use function DDTrace\logs_correlation_trace_id;
 use function extension_loaded;
 use function function_exists;
 use function gethostname;
@@ -54,7 +55,11 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
             throw new MissingExtensionException('The sockets extension is required to use the DataDogUdpHandler');
         }
 
-        if (! function_exists('DDTrace\current_context')) {
+        if (! function_exists('DDTrace\logs_correlation_trace_id')) {
+            throw new MissingExtensionException('The datadog extension is required to use the DataDogUdpHandler');
+        }
+
+        if (! function_exists('dd_trace_peek_span_id')) {
             throw new MissingExtensionException('The datadog extension is required to use the DataDogUdpHandler');
         }
 
@@ -109,8 +114,7 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
 
     private function doWrite(LogRecord $record, Span $span): void
     {
-        $tags    = $span->getAllTags();
-        $context = current_context();
+        $tags = $span->getAllTags();
 
         if (is_array($tags)) {
             $tags = implode(', ', array_map(static function ($key, $value) {
@@ -125,8 +129,8 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
             'ddtags' => $tags,
             'message' => $record->datetime->format('Y-m-d\\TH:i:sP') . ' ' . $record->message,
             'level' => strtolower($record->level->getName()),
-            'traceid' => $context['trace_id'],
-            'spanid' => $context['span_id'],
+            'traceid' => logs_correlation_trace_id(),
+            'spanid' => dd_trace_peek_span_id(),
         ];
 
         $chunk = json_encode($log, JSON_THROW_ON_ERROR);
