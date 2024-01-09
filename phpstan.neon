@@ -1,6 +1,7 @@
 parameters:
     bootstrapFiles:
         - phpstan-bootstrap.php
+        - phpstan-bootstrap-globals.php
 
     level: max
     paths:
