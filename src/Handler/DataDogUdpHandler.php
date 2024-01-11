@@ -122,7 +122,7 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
                     continue;
                 }
 
-                $span->setTag('monolog-context.'.$key, $value);
+                $span->setTag('monolog-context.' . $key, $value);
             }
         }
 
