@@ -50,6 +50,7 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
         private readonly int $port = 514,
         int|string|Level $level = Level::Debug,
         bool $bubble = true,
+        private readonly bool $tagContext = true,
     ) {
         if (! extension_loaded('sockets')) {
             throw new MissingExtensionException('The sockets extension is required to use the DataDogUdpHandler');
@@ -92,6 +93,21 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
 
     protected function write(LogRecord $record): void
     {
+        if ($this->tagContext) {
+            $rootSpan = GlobalTracer::get()->getRootScope()?->getSpan();
+            if (! $rootSpan) {
+                throw new LogicException('No root span is active.');
+            }
+
+            foreach ($record->context as $key => $value) {
+                if (! is_scalar($value)) {
+                    continue;
+                }
+
+                $rootSpan->setTag($key, $value);
+            }
+        }
+
         $activeSpan = GlobalTracer::get()->getActiveSpan();
         if (! $activeSpan) {
             throw new LogicException('No span is active.');
