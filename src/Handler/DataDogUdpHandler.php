@@ -94,21 +94,6 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
 
     protected function write(LogRecord $record): void
     {
-        if ($this->tagContext) {
-            $rootSpan = GlobalTracer::get()->getRootScope()?->getSpan();
-            if (! $rootSpan) {
-                throw new LogicException('No root span is active.');
-            }
-
-            foreach ($record->context as $key => $value) {
-                if (! is_scalar($value)) {
-                    continue;
-                }
-
-                $rootSpan->setTag("monolog-context.$key", $value);
-            }
-        }
-
         $activeSpan = GlobalTracer::get()->getActiveSpan();
         if (! $activeSpan) {
             throw new LogicException('No span is active.');
@@ -131,6 +116,16 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
 
     private function doWrite(LogRecord $record, Span $span): void
     {
+        if ($this->tagContext) {
+            foreach ($record->context as $key => $value) {
+                if (! is_scalar($value)) {
+                    continue;
+                }
+
+                $span->setTag($key, $value);
+            }
+        }
+
         $tags = $span->getAllTags();
 
         if (is_array($tags)) {
