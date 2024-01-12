@@ -116,17 +116,11 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
 
     private function doWrite(LogRecord $record, Span $span): void
     {
-        if ($this->tagContext) {
-            foreach ($record->context as $key => $value) {
-                if (! is_scalar($value)) {
-                    continue;
-                }
-
-                $span->setTag('monolog-context.' . $key, $value);
-            }
-        }
-
         $tags = $span->getAllTags();
+
+        if ($this->tagContext) {
+            $tags += array_filter($record->context, 'is_scalar');
+        }
 
         if (is_array($tags)) {
             $tags = implode(', ', array_map(static function ($key, $value) {
