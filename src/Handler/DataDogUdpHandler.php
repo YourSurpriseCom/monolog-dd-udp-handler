@@ -51,7 +51,6 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
         private readonly int $port = 514,
         int|string|Level $level = Level::Debug,
         bool $bubble = true,
-        private readonly bool $tagContext = true,
     ) {
         if (! extension_loaded('sockets')) {
             throw new MissingExtensionException('The sockets extension is required to use the DataDogUdpHandler');
@@ -117,10 +116,7 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
     private function doWrite(LogRecord $record, Span $span): void
     {
         $tags = $span->getAllTags();
-
-        if ($this->tagContext) {
-            $tags += array_filter($record->context, 'is_scalar');
-        }
+        $tags += array_filter($record->context, 'is_scalar');
 
         if (is_array($tags)) {
             $tags = implode(', ', array_map(static function ($key, $value) {
