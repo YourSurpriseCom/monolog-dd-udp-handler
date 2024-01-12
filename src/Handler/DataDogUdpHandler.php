@@ -15,6 +15,7 @@ use Monolog\LogRecord;
 use RuntimeException;
 use Socket;
 
+use function array_filter;
 use function array_keys;
 use function array_map;
 use function dd_trace_peek_span_id;
@@ -24,7 +25,6 @@ use function function_exists;
 use function gethostname;
 use function implode;
 use function is_array;
-use function is_scalar;
 use function json_encode;
 use function socket_close;
 use function socket_create;
