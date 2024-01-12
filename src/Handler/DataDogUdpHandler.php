@@ -115,7 +115,7 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
 
     private function doWrite(LogRecord $record, Span $span): void
     {
-        $tags = $span->getAllTags();
+        $tags  = $span->getAllTags();
         $tags += array_filter($record->context, 'is_scalar');
 
         if (is_array($tags)) {
