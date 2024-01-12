@@ -15,6 +15,7 @@ use Monolog\LogRecord;
 use RuntimeException;
 use Socket;
 
+use function array_filter;
 use function array_keys;
 use function array_map;
 use function dd_trace_peek_span_id;
@@ -114,7 +115,8 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
 
     private function doWrite(LogRecord $record, Span $span): void
     {
-        $tags = $span->getAllTags();
+        $tags  = $span->getAllTags();
+        $tags += array_filter($record->context, 'is_scalar');
 
         if (is_array($tags)) {
             $tags = implode(', ', array_map(static function ($key, $value) {
