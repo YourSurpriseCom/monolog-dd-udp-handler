@@ -14,7 +14,7 @@
     "php": "^8.2",
     "ext-json": "*",
     "ext-sockets": "*",
-    "datadog/dd-trace": ">=0.94 <0.100",
+    "datadog/dd-trace": ">=0.94 <1.2",
     "monolog/monolog": "^3.4"
   },
   "require-dev": {
