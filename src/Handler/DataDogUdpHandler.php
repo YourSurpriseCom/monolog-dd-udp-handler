@@ -24,13 +24,13 @@ use function extension_loaded;
 use function function_exists;
 use function gethostname;
 use function implode;
-use function is_array;
 use function json_encode;
 use function socket_close;
 use function socket_create;
 use function socket_sendto;
 use function strlen;
 use function strtolower;
+use function strval;
 use function substr;
 
 use const AF_INET;
@@ -116,13 +116,12 @@ final class DataDogUdpHandler extends AbstractProcessingHandler
     private function doWrite(LogRecord $record, Span $span): void
     {
         $tags  = $span->getAllTags();
+        $tags  = array_filter($tags, 'is_scalar');
         $tags += array_filter($record->context, 'is_scalar');
 
-        if (is_array($tags)) {
-            $tags = implode(', ', array_map(static function ($key, $value) {
-                return $key . ':' . $value;
-            }, array_keys($tags), $tags));
-        }
+        $tags = implode(', ', array_map(static function ($key, $value) {
+            return strval($key) . ':' . strval($value);
+        }, array_keys($tags), $tags));
 
         $log = [
             'service' => $span->getService(),

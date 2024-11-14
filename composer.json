@@ -19,7 +19,7 @@
   },
   "require-dev": {
     "doctrine/coding-standard": "^12.0",
-    "phpstan/phpstan": "^1.10.21"
+    "phpstan/phpstan": "^2.0.0"
   },
   "autoload": {
     "psr-4": {
